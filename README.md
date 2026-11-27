@@ -1,13 +1,22 @@
 # Python Full-Stack Web Portfolio
 
-Three independent Flask applications are included:
+Three independent Flask applications:
 
 1. **TaskFlow Pro** — task and project tracking
 2. **StockWise** — inventory and stock control
 3. **CareerTrack** — job application pipeline
 
-Each folder is a standalone runnable project with source code, templates, responsive CSS, dependencies, environment example, tests, and deployment guide.
+Each folder is standalone: source, templates, CSS, dependencies, `.env.example`, tests and deployment guide.
+Recommended order: TaskFlow -> StockWise -> CareerTrack. Python 3.10+ required.
 
-Recommended learning order: TaskFlow → StockWise → CareerTrack.
+Quick start (inside a project folder):
 
-Read each project's README before running it. Python 3.10+ is required.
+```bash
+python -m venv .venv
+# Windows: .venv\Scripts\activate     macOS/Linux: source .venv/bin/activate
+pip install -r requirements.txt
+pytest -q
+python app.py
+```
+
+See `CHANGES.md` for what was corrected in this revision and what still needs to be verified by running it.

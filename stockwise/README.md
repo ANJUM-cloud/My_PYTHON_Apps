@@ -36,8 +36,8 @@ pytest -q
 1. Push this folder to a Git repository.
 2. Create a Python Web Service.
 3. Build command: `pip install -r requirements.txt`
-4. Start command: `gunicorn app:app`
-5. Configure `SECRET_KEY` with a long random value.
+4. Start command: `gunicorn "app:create_app()"`
+5. Configure `SECRET_KEY` with a long random value (the app refuses to start with `COOKIE_SECURE=1` and the default key).
 6. Configure `DATABASE_URL` with a managed PostgreSQL connection string.
 7. Set `COOKIE_SECURE=1` when HTTPS is active.
 8. Deploy and verify `/health`.
@@ -46,10 +46,10 @@ SQLite is for local development. Use managed PostgreSQL for multi-instance produ
 The app creates tables automatically for a starter/demo. Add Flask-Migrate before evolving a production schema.
 
 ## Project structure
-- `app.py` — app factory, models, auth, routes
+- `app.py` — models, validation helpers, app factory, auth, routes
 - `templates/` — Jinja pages
 - `static/style.css` — responsive styling
-- `tests/` — pytest smoke tests
+- `tests/` — pytest suite (auth, CRUD, validation, data isolation, CSRF)
 - `requirements.txt` — dependencies
 - `Procfile` — production process command
 
@@ -70,3 +70,7 @@ The app creates tables automatically for a starter/demo. Add Flask-Migrate befor
 - Review privacy and security requirements before storing real user data.
 
 This is a runnable advanced learning project and deployment-oriented starter, not a security-audited enterprise product.
+
+## Blueprint deployment
+The portfolio root contains `render.yaml`, which defines all three services plus managed PostgreSQL databases (each service uses `rootDir`). Check current plan names and free-tier limits in the Render dashboard before applying.
+`GET /health` returns 200 with `"database": "ok"` and 503 if the database is unreachable.

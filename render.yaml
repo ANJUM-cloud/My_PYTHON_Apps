@@ -1,0 +1,68 @@
+# Render Blueprint for the monorepo. Push the whole portfolio folder to one Git repo,
+# put this file at the repo root, then "New > Blueprint" in Render.
+# Verify plan names / free-tier limits in the Render dashboard before applying.
+databases:
+  - name: taskflow-db
+    plan: free
+  - name: stockwise-db
+    plan: free
+  - name: careertrack-db
+    plan: free
+services:
+  - type: web
+    name: taskflow
+    runtime: python
+    rootDir: taskflow
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn "app:create_app()"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: SECRET_KEY
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: taskflow-db
+          property: connectionString
+  - type: web
+    name: stockwise
+    runtime: python
+    rootDir: stockwise
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn "app:create_app()"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: SECRET_KEY
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: stockwise-db
+          property: connectionString
+  - type: web
+    name: careertrack
+    runtime: python
+    rootDir: careertrack
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn "app:create_app()"
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: SECRET_KEY
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "1"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: careertrack-db
+          property: connectionString
